@@ -13,8 +13,8 @@ int main()
 	cout << "\tx - to exit" << endl;
 	cout << "Enter an option: ";
 	char option = '\0';
-	cin >> option;
-	if (cin.fail() || !cin.) {
+	cin.getline(&option, 2);
+	if (cin.fail()) {
 		cout << "Not an option" << endl;
 	}
 	else if (option == 'e') {
