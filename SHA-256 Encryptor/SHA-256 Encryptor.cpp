@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <fstream>
+#include <numeric>
 using namespace std;
+
+bool GetChar(char& ch);
 
 int main()
 {
@@ -13,8 +16,7 @@ int main()
 	cout << "\tx - to exit" << endl;
 	cout << "Enter an option: ";
 	char option = '\0';
-	cin.getline(&option, 2);
-	if (cin.fail()) {
+	if (!GetChar(option)) {
 		cout << "Not an option" << endl;
 	}
 	else if (option == 'e') {
@@ -29,4 +31,19 @@ int main()
 	else {
 		cout << "Unrecognised option" << endl;
 	}
+}
+
+bool GetChar(char& ch)
+{
+	char str[2] = {};
+	cin.getline(str, 2);
+	bool res = !cin.fail();
+	if (res) {
+		ch = str[0];
+	}
+	else {
+		ch = '\0';
+	}
+	cin.clear();
+	return res;
 }
