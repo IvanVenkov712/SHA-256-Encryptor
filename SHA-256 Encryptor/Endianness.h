@@ -1,4 +1,4 @@
 #pragma once
 
 bool IsLittleEndian();
-int ToBigEndian(int value);
+unsigned long long ToBigEndian(unsigned long long value);

@@ -1,4 +1,5 @@
 #include "FileHelpers.h"
+#include "Memory.h"
 
 int AlignFileSize(int val)
 {
@@ -43,12 +44,11 @@ Byte* LoadFileInMemory(const char* fileName, int& size)
 		return nullptr;
 	}
 	char* buff = new char[buffSize];
-	fSize = ToBigEndian(fSize);
-	buff
+	buff[fSize] = 0b10000000;
+	unsigned long long BEfSize = ToBigEndian(8 * ((unsigned long long)fSize));
+	MemoryCopy(&fSize, sizeof(BEfSize), buff - 1 - sizeof(BEfSize));
 	fStream.read(buff, fSize);
 	fStream.close();
-
-	//
 	size = buffSize;
 	return (Byte*)buff;
 }

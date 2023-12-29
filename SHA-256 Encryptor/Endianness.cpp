@@ -7,11 +7,11 @@ bool IsLittleEndian()
 	return *ptr == 0;
 }
 
-int ToBigEndian(int value)
+unsigned long long ToBigEndian(unsigned long long value)
 {
 	if (IsLittleEndian()) {
-		unsigned int res = value;
-		unsigned char* ptr = (unsigned char*)value;
+		unsigned long long res = value;
+		unsigned char* ptr = (unsigned char*)&value;
 		unsigned int size = sizeof(res);
 		for (int i = 0; i < size / 2; ++i) {
 			unsigned char tmp = ptr[i];

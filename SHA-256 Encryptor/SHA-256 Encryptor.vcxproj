@@ -129,11 +129,13 @@
   <ItemGroup>
     <ClCompile Include="Endianness.cpp" />
     <ClCompile Include="FileHelpers.cpp" />
+    <ClCompile Include="Memory.cpp" />
     <ClCompile Include="SHA-256 Encryptor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Endianness.h" />
     <ClInclude Include="FileHelpers.h" />
+    <ClInclude Include="Memory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

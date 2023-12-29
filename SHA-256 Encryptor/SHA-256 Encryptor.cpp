@@ -4,35 +4,46 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include <bitset>
 #include "FileHelpers.h"
+
 using namespace std;
 
 bool GetChar(char& ch);
 
 int main()
 {
-	cout << IsLittleEndian() << endl;
-	cout << "Available options:" << endl;
-	cout << "\te - to hash a file" << endl;
-	cout << "\tr - to read a hashed message" << endl;
-	cout << "\tx - to exit" << endl;
-	cout << "Enter an option: ";
-	char option = '\0';
-	if (!GetChar(option)) {
-		cout << "Not an option" << endl;
+	//cout << "Available options:" << endl;
+	//cout << "\te - to hash a file" << endl;
+	//cout << "\tr - to read a hashed message" << endl;
+	//cout << "\tx - to exit" << endl;
+	//cout << "Enter an option: ";
+	//char option = '\0';
+	//if (!GetChar(option)) {
+	//	cout << "Not an option" << endl;
+	//}
+	//else if (option == 'e') {
+	//	//...
+	//}
+	//else if (option == 'r') {
+	//	//...
+	//}
+	//else if (option == 'x') {
+	//	return 0;
+	//}
+	//else {
+	//	cout << "Unrecognised option" << endl;
+	//}
+	int size;
+	Byte* b = LoadFileInMemory("C:\\Users\\ivanv\\Desktop\\hl.txt", size);
+	for (int i = 0; i < size/8; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			std::cout << std::bitset<8>(b[i + j]) << " ";
+		}
+		std::cout << endl;
 	}
-	else if (option == 'e') {
-		//...
-	}
-	else if (option == 'r') {
-		//...
-	}
-	else if (option == 'x') {
-		return 0;
-	}
-	else {
-		cout << "Unrecognised option" << endl;
-	}
+	delete[] b;
+
 }
 
 bool GetChar(char& ch)
