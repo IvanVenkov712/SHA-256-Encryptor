@@ -31,7 +31,7 @@ int FileSize(const char* fileName)
 	return n;
 }
 
-Byte* LoadFileInMemory(const char* fileName, size_t& size)
+Byte* LoadFileInMemory(const char* fileName, int& size)
 {
 	int fSize = FileSize(fileName);
 	if (fSize < 0) {
@@ -43,9 +43,12 @@ Byte* LoadFileInMemory(const char* fileName, size_t& size)
 		return nullptr;
 	}
 	char* buff = new char[buffSize];
+	fSize = ToBigEndian(fSize);
+	buff
 	fStream.read(buff, fSize);
 	fStream.close();
 
 	//
+	size = buffSize;
 	return (Byte*)buff;
 }

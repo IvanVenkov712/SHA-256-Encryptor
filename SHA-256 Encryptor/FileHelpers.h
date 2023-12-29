@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include "Endianness.h"
 
 using Byte = unsigned char;
 const int CHUNKSIZE = 64;

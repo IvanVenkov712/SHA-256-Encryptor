@@ -4,12 +4,14 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include "FileHelpers.h"
 using namespace std;
 
 bool GetChar(char& ch);
 
 int main()
 {
+	cout << IsLittleEndian() << endl;
 	cout << "Available options:" << endl;
 	cout << "\te - to hash a file" << endl;
 	cout << "\tr - to read a hashed message" << endl;
