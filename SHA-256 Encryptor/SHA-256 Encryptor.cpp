@@ -38,7 +38,7 @@ int main()
 	Byte* b = LoadFileInMemory("C:\\Users\\ivanv\\Desktop\\hl.txt", size);
 	for (int i = 0; i < size/8; ++i) {
 		for (int j = 0; j < 8; ++j) {
-			std::cout << std::bitset<8>(b[i + j]) << " ";
+			std::cout << std::bitset<8>(b[8 * i + j]) << " ";
 		}
 		std::cout << endl;
 	}

@@ -11,7 +11,7 @@ unsigned long long ToBigEndian(unsigned long long value)
 {
 	if (IsLittleEndian()) {
 		unsigned long long res = value;
-		unsigned char* ptr = (unsigned char*)&value;
+		unsigned char* ptr = (unsigned char*)&res;
 		unsigned int size = sizeof(res);
 		for (int i = 0; i < size / 2; ++i) {
 			unsigned char tmp = ptr[i];

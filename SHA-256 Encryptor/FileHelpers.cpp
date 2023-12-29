@@ -39,14 +39,17 @@ Byte* LoadFileInMemory(const char* fileName, int& size)
 		return nullptr;
 	}
 	int buffSize = AlignFileSize(fSize);
-	std::ifstream fStream(fileName);
+	std::ifstream fStream(fileName, std::ios::binary);
 	if (!fStream.is_open()) {
 		return nullptr;
 	}
 	char* buff = new char[buffSize];
+	for (int i = 0; i < buffSize; ++i) {
+		buff[i] = 0;
+	}
 	buff[fSize] = 0b10000000;
 	unsigned long long BEfSize = ToBigEndian(8 * ((unsigned long long)fSize));
-	MemoryCopy(&fSize, sizeof(BEfSize), buff - 1 - sizeof(BEfSize));
+	MemoryCopy(&BEfSize, sizeof(BEfSize), buff + buffSize - sizeof(BEfSize));
 	fStream.read(buff, fSize);
 	fStream.close();
 	size = buffSize;

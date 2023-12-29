@@ -1,2 +1,2 @@
 #pragma once
-void MemoryCopy(void* src, int nSrc, void* dst);
+void MemoryCopy(const void* src, int nSrc, void* dst);
