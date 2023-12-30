@@ -6,6 +6,7 @@
 #include <numeric>
 #include <bitset>
 #include "FileHelpers.h"
+#include "Hash.h"
 
 using namespace std;
 
@@ -34,16 +35,6 @@ int main()
 	//else {
 	//	cout << "Unrecognised option" << endl;
 	//}
-	int size;
-	Byte* b = LoadFileInMemory("C:\\Users\\ivanv\\Desktop\\hl.txt", size);
-	for (int i = 0; i < size/8; ++i) {
-		for (int j = 0; j < 8; ++j) {
-			std::cout << std::bitset<8>(b[8 * i + j]) << " ";
-		}
-		std::cout << endl;
-	}
-	delete[] b;
-
 }
 
 bool GetChar(char& ch)
