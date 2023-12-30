@@ -131,6 +131,7 @@
     <ClCompile Include="FileHelpers.cpp" />
     <ClCompile Include="Hash.cpp" />
     <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="ToStrHex.cpp" />
     <ClCompile Include="SHA-256 Encryptor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="FileHelpers.h" />
     <ClInclude Include="Hash.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="ToStrHex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

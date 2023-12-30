@@ -19,11 +19,11 @@ unsigned int rightrotate(unsigned int value, unsigned int n)
 	unsigned int remainingBits = (value & mask) << (sizeof(value) * 8 - n);
 	return (value >> n) | remainingBits;
 }
-void Hash(const char* fileName) {
+bool HashFile(const char* fileName, Hash* out) {
 	int buffSize = 0;
 	Byte* buff = LoadFileInMemory(fileName, buffSize);
 	if (buff == nullptr) {
-		return;
+		return false;
 	}
 	unsigned int h0 = 0x6a09e667;
 	unsigned int h1 = 0xbb67ae85;
@@ -81,13 +81,30 @@ void Hash(const char* fileName) {
 		h6 = h6+ g;
 		h7 = h7+ h;
 	}
-	std::cout << 
-		std::hex << (h0) << 
-		std::hex << (h1) << 
-		std::hex << (h2) << 
-		std::hex << (h3) << 
-		std::hex << (h4) << 
-		std::hex << (h5) << 
-		std::hex << (h6) <<
-		std::hex << (h7) << std::endl;
+	out->h0 = h0;
+	out->h1 = h1;
+	out->h2 = h2;
+	out->h3 = h3;
+	out->h4 = h4;
+	out->h5 = h5;
+	out->h6 = h6;
+	out->h7 = h7;
+	delete[] buff;
+	return true;
+}
+
+bool HashToStr(char* dst, size_t nDst, const Hash* hash)
+{
+	if (dst == nullptr || hash == nullptr || nDst < sizeof(*hash) * 2 + 1) {
+		return false;
+	}
+	ToStrHex(dst, nDst, hash->h0);
+	ToStrHex(dst + 8, nDst - 8, hash->h1);
+	ToStrHex(dst + 16, nDst - 16, hash->h2);
+	ToStrHex(dst + 24, nDst - 24, hash->h3);
+	ToStrHex(dst + 32, nDst - 32, hash->h4);
+	ToStrHex(dst + 40, nDst - 40, hash->h5);
+	ToStrHex(dst + 48, nDst - 48, hash->h6);
+	ToStrHex(dst + 56, nDst - 56, hash->h7);
+	return true;
 }

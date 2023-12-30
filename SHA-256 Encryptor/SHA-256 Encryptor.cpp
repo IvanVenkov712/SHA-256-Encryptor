@@ -35,7 +35,11 @@ int main()
 	//else {
 	//	cout << "Unrecognised option" << endl;
 	//}
-	Hash("C:\\Users\\ivanv\\Desktop\\hl.txt");
+	Hash h = {};
+	char hashStr[sizeof(h) * 2 + 1] = {};
+	HashFile("C:\\Users\\ivanv\\Desktop\\hl.txt", &h);
+	HashToStr(hashStr, sizeof(hashStr), &h);
+	cout << hashStr << endl;
 }
 
 bool GetChar(char& ch)

@@ -13,7 +13,7 @@ int AlignFileSize(int val)
 	if (val < 0) {
 		return -1;
 	}
-	val += ULLSIZE;
+	val += ULLSIZE + 1;
 	return val + CHUNKSIZE - val % CHUNKSIZE;
 
 }
