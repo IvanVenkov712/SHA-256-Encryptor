@@ -35,6 +35,7 @@ int main()
 	//else {
 	//	cout << "Unrecognised option" << endl;
 	//}
+	Hash("C:\\Users\\ivanv\\Desktop\\hl.txt");
 }
 
 bool GetChar(char& ch)
