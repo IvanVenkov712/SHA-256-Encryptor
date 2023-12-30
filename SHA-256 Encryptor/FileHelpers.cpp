@@ -47,7 +47,7 @@ Byte* LoadFileInMemory(const char* fileName, int& size)
 		buff[i] = 0;
 	}
 	buff[fSize] = 0b10000000;
-	unsigned long long BEfSize = SwapBytesLLU(8 * ((unsigned long long)fSize));
+	unsigned long long BEfSize = ToBigEndianLLU(8 * ((unsigned long long)fSize));
 	MemoryCopy(&BEfSize, sizeof(BEfSize), buff + buffSize - sizeof(BEfSize));
 	fStream.read(buff, fSize);
 	fStream.close();

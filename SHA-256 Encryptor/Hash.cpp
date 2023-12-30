@@ -25,24 +25,26 @@ void Hash(const char* fileName) {
 	if (buff == nullptr) {
 		return;
 	}
-	unsigned int h0 = ToBigEndianU(0x6a09e667);
-	unsigned int h1 = ToBigEndianU(0xbb67ae85);
-	unsigned int h2 = ToBigEndianU(0x3c6ef372);
-	unsigned int h3 = ToBigEndianU(0xa54ff53a);
-	unsigned int h4 = ToBigEndianU(0x510e527f);
-	unsigned int h5 = ToBigEndianU(0x9b05688c);
-	unsigned int h6 = ToBigEndianU(0x1f83d9ab);
-	unsigned int h7 = ToBigEndianU(0x5be0cd19);
+	unsigned int h0 = 0x6a09e667;
+	unsigned int h1 = 0xbb67ae85;
+	unsigned int h2 = 0x3c6ef372;
+	unsigned int h3 = 0xa54ff53a;
+	unsigned int h4 = 0x510e527f;
+	unsigned int h5 = 0x9b05688c;
+	unsigned int h6 = 0x1f83d9ab;
+	unsigned int h7 = 0x5be0cd19;
 
 	for (int i = 0; i < buffSize / CHUNKSIZE; ++i) {
 		const unsigned char* chunk = buff + CHUNKSIZE * i;
 		unsigned int w[64] = {};
 		MemoryCopy(chunk, CHUNKSIZE, w);
-
+		for (int i = 0; i < 64; ++i) {
+			w[i] = SwapBytesU(w[i]);
+		}
 		for (int j = 16; j < 64; ++j) {
 			unsigned int s0 = rightrotate(w[j - 15], 7) ^ rightrotate(w[j - 15], 18) ^ (w[j - 15] >> 3);
 			unsigned int s1 = rightrotate(w[j - 2], 17) ^ rightrotate(w[j - 2], 19) ^ (w[j - 2] >> 10);
-			w[j] = BigEndianAddU(BigEndianAddU(BigEndianAddU(w[j - 16], s0), w[j - 7]), s1);
+			w[j] = w[j - 16] + s0 + w[j - 7] + s1;
 		}
 
 		unsigned int a = h0;
@@ -57,35 +59,35 @@ void Hash(const char* fileName) {
 		for (int j = 0; j < 64; ++j) {
 			unsigned int S1 = rightrotate(e, 6) ^ rightrotate(e, 11) ^ rightrotate(e, 25);
 			unsigned int ch = (e & f) ^ ((~e) & g);
-			unsigned int temp1 = BigEndianAddU(h, BigEndianAddU( S1,  BigEndianAddU(ch, BigEndianAddU( ToBigEndianU(k[j]) , w[j]))));
+			unsigned int temp1 = h + S1 + ch + k[j] + w[j];
 			unsigned int S0 = rightrotate(a, 2) ^ rightrotate(a, 13) ^ rightrotate(a, 22);
 			unsigned int maj = (a & b) ^ (a & c) ^ (b & c);
-			unsigned int temp2 = BigEndianAddU(S0, maj);
+			unsigned int temp2 = S0+ maj;
 			h = g;
 			g = f;
 			f = e;
-			e = BigEndianAddU(d, temp1);
+			e = d + temp1;
 			d = c;
 			c = b;
 			b = a;
-			a = BigEndianAddU(temp1, temp2);
+			a = temp1 + temp2;
 		}
-		h0 = BigEndianAddU(h0, a);
-		h1 = BigEndianAddU(h1, b);
-		h2 = BigEndianAddU(h2, c);
-		h3 = BigEndianAddU(h3, d);
-		h4 = BigEndianAddU(h4, e);
-		h5 = BigEndianAddU(h5, f);
-		h6 = BigEndianAddU(h6, g);
-		h7 = BigEndianAddU(h7, h);
+		h0 = h0+ a;
+		h1 = h1+ b;
+		h2 = h2+ c;
+		h3 = h3+ d;
+		h4 = h4+ e;
+		h5 = h5+ f;
+		h6 = h6+ g;
+		h7 = h7+ h;
 	}
 	std::cout << 
-		std::hex << SwapBytesU(h0) << 
-		std::hex << SwapBytesU(h1) << 
-		std::hex << SwapBytesU(h2) << 
-		std::hex << SwapBytesU(h3) << 
-		std::hex << SwapBytesU(h4) << 
-		std::hex << SwapBytesU(h5) << 
-		std::hex << SwapBytesU(h6) <<
-		std::hex << SwapBytesU(h7) << std::endl;
+		std::hex << (h0) << 
+		std::hex << (h1) << 
+		std::hex << (h2) << 
+		std::hex << (h3) << 
+		std::hex << (h4) << 
+		std::hex << (h5) << 
+		std::hex << (h6) <<
+		std::hex << (h7) << std::endl;
 }
