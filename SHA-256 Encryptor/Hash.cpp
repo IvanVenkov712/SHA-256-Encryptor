@@ -38,8 +38,10 @@ bool HashFile(const char* fileName, Hash* out) {
 		const unsigned char* chunk = buff + CHUNKSIZE * i;
 		unsigned int w[64] = {};
 		MemoryCopy(chunk, CHUNKSIZE, w);
-		for (int i = 0; i < 64; ++i) {
-			w[i] = SwapBytesU(w[i]);
+		if (IsLittleEndian()) {
+			for (int i = 0; i < 64; ++i) {
+				w[i] = SwapBytesU(w[i]);
+			}
 		}
 		for (int j = 16; j < 64; ++j) {
 			unsigned int s0 = rightrotate(w[j - 15], 7) ^ rightrotate(w[j - 15], 18) ^ (w[j - 15] >> 3);
@@ -93,6 +95,83 @@ bool HashFile(const char* fileName, Hash* out) {
 	return true;
 }
 
+bool HashMessage(const char* msg, Hash* out)
+{
+	int buffSize = 0;
+	Byte* buff = PadMessage(msg, buffSize);
+	if (buff == nullptr) {
+		return false;
+	}
+	unsigned int h0 = 0x6a09e667;
+	unsigned int h1 = 0xbb67ae85;
+	unsigned int h2 = 0x3c6ef372;
+	unsigned int h3 = 0xa54ff53a;
+	unsigned int h4 = 0x510e527f;
+	unsigned int h5 = 0x9b05688c;
+	unsigned int h6 = 0x1f83d9ab;
+	unsigned int h7 = 0x5be0cd19;
+
+	for (int i = 0; i < buffSize / CHUNKSIZE; ++i) {
+		const unsigned char* chunk = buff + CHUNKSIZE * i;
+		unsigned int w[64] = {};
+		MemoryCopy(chunk, CHUNKSIZE, w);
+		if (IsLittleEndian()) {
+			for (int i = 0; i < 64; ++i) {
+				w[i] = SwapBytesU(w[i]);
+			}
+		}
+		for (int j = 16; j < 64; ++j) {
+			unsigned int s0 = rightrotate(w[j - 15], 7) ^ rightrotate(w[j - 15], 18) ^ (w[j - 15] >> 3);
+			unsigned int s1 = rightrotate(w[j - 2], 17) ^ rightrotate(w[j - 2], 19) ^ (w[j - 2] >> 10);
+			w[j] = w[j - 16] + s0 + w[j - 7] + s1;
+		}
+
+		unsigned int a = h0;
+		unsigned int b = h1;
+		unsigned int c = h2;
+		unsigned int d = h3;
+		unsigned int e = h4;
+		unsigned int f = h5;
+		unsigned int g = h6;
+		unsigned int h = h7;
+
+		for (int j = 0; j < 64; ++j) {
+			unsigned int S1 = rightrotate(e, 6) ^ rightrotate(e, 11) ^ rightrotate(e, 25);
+			unsigned int ch = (e & f) ^ ((~e) & g);
+			unsigned int temp1 = h + S1 + ch + k[j] + w[j];
+			unsigned int S0 = rightrotate(a, 2) ^ rightrotate(a, 13) ^ rightrotate(a, 22);
+			unsigned int maj = (a & b) ^ (a & c) ^ (b & c);
+			unsigned int temp2 = S0 + maj;
+			h = g;
+			g = f;
+			f = e;
+			e = d + temp1;
+			d = c;
+			c = b;
+			b = a;
+			a = temp1 + temp2;
+		}
+		h0 = h0 + a;
+		h1 = h1 + b;
+		h2 = h2 + c;
+		h3 = h3 + d;
+		h4 = h4 + e;
+		h5 = h5 + f;
+		h6 = h6 + g;
+		h7 = h7 + h;
+	}
+	out->h0 = h0;
+	out->h1 = h1;
+	out->h2 = h2;
+	out->h3 = h3;
+	out->h4 = h4;
+	out->h5 = h5;
+	out->h6 = h6;
+	out->h7 = h7;
+	delete[] buff;
+	return true;
+}
+
 bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 {
 	if (dst == nullptr || hash == nullptr || nDst < sizeof(*hash) * 2 + 1) {
@@ -107,4 +186,34 @@ bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 	ToStrHex(dst + 48, nDst - 48, hash->h6);
 	ToStrHex(dst + 56, nDst - 56, hash->h7);
 	return true;
+}
+int StrLen(const char* str)
+{
+	if (!str) {
+		return 0;
+	}
+	const char* begin = str;
+	while (*str != '\0') {
+		++str;
+	}
+	return str - begin;
+}
+
+Byte* PadMessage(const char* msg, int& size)
+{
+	int msgLen = StrLen(msg)// + 1;
+		;
+	int buffSize = AlignBuffSize(msgLen);
+	Byte* buff = new Byte[buffSize];
+	for (int i = 0; i < buffSize; ++i) {
+		buff[i] = 0;
+	}
+	for (int i = 0; i < msgLen; ++i) {
+		buff[i] = msg[i];
+	}
+	buff[msgLen] = 0b10000000;
+	unsigned long long BEMsgLen = ToBigEndianLLU(8 * (unsigned long long)msgLen);
+	MemoryCopy(&BEMsgLen, sizeof(BEMsgLen), buff + buffSize - sizeof(BEMsgLen));
+	size = buffSize;
+	return buff;
 }

@@ -16,4 +16,7 @@ struct Hash {
 
 unsigned int rightrotate(unsigned int value, unsigned int n);
 bool HashFile(const char* fileName, Hash* out);
+bool HashMessage(const char* msg, Hash* out);
 bool HashToStr(char* dst, size_t nDst, const Hash* hash);
+int StrLen(const char* str);
+Byte* PadMessage(const char* msg, int& size);

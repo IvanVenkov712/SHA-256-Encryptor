@@ -35,11 +35,17 @@ int main()
 	//else {
 	//	cout << "Unrecognised option" << endl;
 	//}
-	Hash h = {};
-	char hashStr[sizeof(h) * 2 + 1] = {};
-	HashFile("C:\\Users\\ivanv\\Desktop\\hl.txt", &h);
-	HashToStr(hashStr, sizeof(hashStr), &h);
-	cout << hashStr << endl;
+	while (true) {
+		Hash h = {};
+		char hashStr[sizeof(h) * 2 + 1] = {};
+		char msg[2048] = {};
+		cin.getline(msg, sizeof(msg));
+		HashMessage(msg, &h);
+		HashToStr(hashStr, sizeof(hashStr), &h);
+		cout << hashStr << endl;
+		ToStrHex(hashStr, sizeof(hashStr), 1);
+	
+	}
 }
 
 bool GetChar(char& ch)

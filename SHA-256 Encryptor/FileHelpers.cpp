@@ -1,6 +1,6 @@
 #include "FileHelpers.h"
 
-int AlignFileSize(int val)
+int AlignBuffSize(int val)
 {
 	/*if (val < 0) {
 		return -1;
@@ -37,7 +37,7 @@ Byte* LoadFileInMemory(const char* fileName, int& size)
 	if (fSize < 0) {
 		return nullptr;
 	}
-	int buffSize = AlignFileSize(fSize);
+	int buffSize = AlignBuffSize(fSize);
 	std::ifstream fStream(fileName, std::ios::binary);
 	if (!fStream.is_open()) {
 		return nullptr;
