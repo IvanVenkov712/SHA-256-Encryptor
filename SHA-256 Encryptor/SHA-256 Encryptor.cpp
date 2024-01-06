@@ -11,6 +11,8 @@
 using namespace std;
 
 bool GetChar(char& ch);
+char* TryAllMessagesOfLenN(unsigned int n, const char* hash);
+char* TryAllMessagesOfLenN(unsigned int n, char* initBuff, const char* hash );
 
 int main()
 {
@@ -35,17 +37,33 @@ int main()
 	//else {
 	//	cout << "Unrecognised option" << endl;
 	//}
-	while (true) {
-		Hash h = {};
-		char hashStr[sizeof(h) * 2 + 1] = {};
-		char msg[2048] = {};
-		cin.getline(msg, sizeof(msg));
-		HashMessage(msg, &h);
-		HashToStr(hashStr, sizeof(hashStr), &h);
-		cout << hashStr << endl;
-		ToStrHex(hashStr, sizeof(hashStr), 1);
-	
+	//while (true) {
+	//	Hash h = {};
+	//	char hashStr[sizeof(h) * 2 + 1] = {};
+	//	char msg[2048] = {};
+	//	cin.getline(msg, sizeof(msg));
+	//	HashMessage(msg, &h);
+	//	HashToStr(hashStr, sizeof(hashStr), &h);
+	//	cout << hashStr << endl;
+	//	ToStrHex(hashStr, sizeof(hashStr), 1);
+	//
+	//}
+	cout << "Enter hash: ";
+	char hash[257];
+	cin.getline(hash, 256);
+	char* orig;
+	for (int i = 0; i < 30; ++i) {
+		 orig = TryAllMessagesOfLenN(i, hash);
+		if (orig) {
+			break;
+		}
 	}
+	if(orig != nullptr){	
+		cout << "Original message: " << orig << endl;
+		delete[] orig;
+
+	}
+
 }
 
 bool GetChar(char& ch)
@@ -61,4 +79,48 @@ bool GetChar(char& ch)
 	}
 	cin.clear();
 	return res;
+}
+
+char* TryAllMessagesOfLenN(unsigned int n, const char* hash)
+{
+	char* buff = new char[n + 1];
+	buff[n] = 0;
+	char* res = TryAllMessagesOfLenN(n, buff, hash);
+	if (res == nullptr) {
+		delete[] buff;
+	}
+	return res;
+
+
+}
+
+char* TryAllMessagesOfLenN(unsigned int n, char* initBuff, const char* hash)
+{
+	if (n == 0) {
+		return nullptr;
+	}
+	if (n == 1) {
+		Hash h = {};
+		char hashMsg[257] = {};
+		for (unsigned char ch = 255; ch >= 1; --ch) {
+			initBuff[0] = ch;
+			HashMessage(initBuff, &h);
+			HashToStr(hashMsg, 257, &h);
+			if (strcmp(hash, hashMsg) == 0) {
+				return initBuff;
+			}
+		}
+		return nullptr;
+	}
+	else {
+
+		for (unsigned char ch = 255; ch >= 1; --ch) {
+			initBuff[n - 1] = ch;
+			char* res = TryAllMessagesOfLenN(n - 1, initBuff, hash);
+			if (res != nullptr) {
+				return res;
+			}
+		}
+	}
+	return nullptr;
 }

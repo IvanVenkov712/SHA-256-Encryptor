@@ -1,6 +1,6 @@
 #include "ToStrHex.h"
 
-const char dictionary[17] = "0123456789ABCDEF";
+const char dictionary[17] = "0123456789abcdef";
 
 bool ToStrHex(char* dst, size_t nDst, unsigned int value)
 {
