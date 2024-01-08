@@ -30,7 +30,7 @@
     <ClCompile Include="Hash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ToStrHex.cpp">
+    <ClCompile Include="StringHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClInclude Include="Hash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ToStrHex.h">
+    <ClInclude Include="StringHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -95,7 +95,7 @@ bool HashFile(const char* fileName, Hash* out) {
 	return true;
 }
 
-bool HashMessage(const char* msg, Hash* out)
+bool HashString(const char* msg, Hash* out)
 {
 	int buffSize = 0;
 	Byte* buff = PadMessage(msg, buffSize);
@@ -187,18 +187,6 @@ bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 	ToStrHex(dst + 56, nDst - 56, hash->h7);
 	return true;
 }
-int StrLen(const char* str)
-{
-	if (!str) {
-		return 0;
-	}
-	const char* begin = str;
-	while (*str != '\0') {
-		++str;
-	}
-	return str - begin;
-}
-
 Byte* PadMessage(const char* msg, int& size)
 {
 	int msgLen = StrLen(msg)// + 1;
