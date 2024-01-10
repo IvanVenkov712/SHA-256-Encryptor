@@ -64,7 +64,7 @@ bool HashFile(const char* fileName, Hash* out) {
 			unsigned int temp1 = h + S1 + ch + k[j] + w[j];
 			unsigned int S0 = rightrotate(a, 2) ^ rightrotate(a, 13) ^ rightrotate(a, 22);
 			unsigned int maj = (a & b) ^ (a & c) ^ (b & c);
-			unsigned int temp2 = S0+ maj;
+			unsigned int temp2 = S0 + maj;
 			h = g;
 			g = f;
 			f = e;
@@ -74,14 +74,14 @@ bool HashFile(const char* fileName, Hash* out) {
 			b = a;
 			a = temp1 + temp2;
 		}
-		h0 = h0+ a;
-		h1 = h1+ b;
-		h2 = h2+ c;
-		h3 = h3+ d;
-		h4 = h4+ e;
-		h5 = h5+ f;
-		h6 = h6+ g;
-		h7 = h7+ h;
+		h0 = h0 + a;
+		h1 = h1 + b;
+		h2 = h2 + c;
+		h3 = h3 + d;
+		h4 = h4 + e;
+		h5 = h5 + f;
+		h6 = h6 + g;
+		h7 = h7 + h;
 	}
 	out->h0 = h0;
 	out->h1 = h1;
@@ -189,8 +189,7 @@ bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 }
 Byte* PadMessage(const char* msg, int& size)
 {
-	int msgLen = StrLen(msg)// + 1;
-		;
+	int msgLen = StrLen(msg);
 	int buffSize = AlignBuffSize(msgLen);
 	Byte* buff = new Byte[buffSize];
 	for (int i = 0; i < buffSize; ++i) {
