@@ -47,9 +47,9 @@ int main()
 	else if (option == 'c') {
 		char hash1[STR_SIZE] = {};
 		char hash2[STR_SIZE] = {};
-		cout << "Enter a hash: ";
+		cout << "Enter a hash (lower case): ";
 		cin.getline(hash1, STR_SIZE);
-		if (cin.fail()) {
+		if (cin.fail() || !IsValidHashCode(hash1)) {
 			cout << "Incorrect input" << endl;
 			return 1;
 		}
@@ -80,6 +80,7 @@ void PrintInformation()
 	cout << "\th - Hash a file or a message" << endl;
 	cout << "\tc - Compare the hash of a message or a file with another hash" << endl;
 	cout << "\tx - Exit" << endl;
+	cout << endl;
 }
 
 bool GetHashOfInputMessage(char* dst, int dstSize)
@@ -130,7 +131,7 @@ bool GetHashOfInputFile(char* dst, int dstSize)
 
 bool GetHashFromUserInput(char* dst, int dstSize)
 {
-	cout << "Enter 'm' to hash a message or 'f' to hash a file." << endl;
+	cout << "Enter 'm' or 'f' to get the hashcode of a message or a file." << endl;
 	cout << "('m' or 'f'): ";
 	char hSource = '\0';
 	bool getHashSuccess = false;

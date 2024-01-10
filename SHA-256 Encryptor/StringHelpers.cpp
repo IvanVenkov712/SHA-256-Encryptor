@@ -2,8 +2,8 @@
 
 int StrLen(const char* str)
 {
-	if (!str) {
-		return 0;
+	if (str == nullptr) {
+		return -1;
 	}
 	const char* begin = str;
 	while (*str != '\0') {
@@ -94,4 +94,19 @@ char* GetString(char delim)
 	}
 	str[strLen] = '\0';
 	return str;
+}
+
+bool IsValidHashCode(const char* str)
+{
+	int len = StrLen(str);
+	if (len != 64) {
+		return false;
+	}
+	for (int i = 0; i < len; ++i) {
+		unsigned char c = str[i];
+		if (c < '0' || (c > '9' && c < 'a') || c > 'f') {
+			return false;
+		}
+	}
+	return true;
 }
