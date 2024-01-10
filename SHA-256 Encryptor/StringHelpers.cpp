@@ -20,15 +20,11 @@ int StrCmp(const char* str1, const char* str2)
 	else if (str1 == nullptr || str2 == nullptr) {
 		return str1 - str2;
 	}
-	do {
-		int diff = *str1 - *str2;
-		if (diff != 0) {
-			return diff;
-		}
+	while (*str1 != '\0' && (*str1 == *str2)) {
 		++str1;
 		++str2;
-	} while (*str1 != '\0' && *str2 != '\0');
-	return 0;
+	}
+	return *(const unsigned char*)str1 - *(const unsigned char*)str2;
 }
 
 bool ToStrHex(char* dst, size_t nDst, unsigned int value)
