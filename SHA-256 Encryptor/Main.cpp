@@ -1,5 +1,17 @@
-// SHA-256 Encryptor.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/**
+*
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2023/2024
+*
+* @author Ivan Venkov
+* @idnumber 1MI0600291
+* @compiler VC
+*
+* Source file: Contains the entry point of the program
+*
+*/
 
 #include <iostream>
 #include <fstream>

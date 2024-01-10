@@ -1,15 +1,22 @@
+/**
+*
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2023/2024
+*
+* @author Ivan Venkov
+* @idnumber 1MI0600291
+* @compiler VC
+*
+* Source: Contains definitions of helper functions for files
+*
+*/
+
 #include "FileHelpers.h"
 
 int AlignBuffSize(int val)
 {
-	/*if (val < 0) {
-		return -1;
-	}
-	int res = CHUNKSIZE-ULLSIZE;
-	while (res < val) {
-		res += CHUNKSIZE;
-	}
-	return res + ULLSIZE;*/
 	if (val < 0) {
 		return -1;
 	}
