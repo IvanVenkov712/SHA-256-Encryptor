@@ -95,10 +95,10 @@ bool HashFile(const char* fileName, Hash* out) {
 	return true;
 }
 
-bool HashString(const char* msg, Hash* out)
+bool HashString(const char* str, Hash* out)
 {
 	int buffSize = 0;
-	Byte* buff = PadString(msg, buffSize);
+	Byte* buff = PadString(str, buffSize);
 	if (buff == nullptr) {
 		return false;
 	}
@@ -187,16 +187,16 @@ bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 	ToStrHex(dst + 56, nDst - 56, hash->h7);
 	return true;
 }
-Byte* PadString(const char* msg, int& size)
+Byte* PadString(const char* str, int& size)
 {
-	int msgLen = StrLen(msg);
+	int msgLen = StrLen(str);
 	int buffSize = AlignBuffSize(msgLen);
 	Byte* buff = new Byte[buffSize];
 	for (int i = 0; i < buffSize; ++i) {
 		buff[i] = 0;
 	}
 	for (int i = 0; i < msgLen; ++i) {
-		buff[i] = msg[i];
+		buff[i] = str[i];
 	}
 	buff[msgLen] = 0b10000000;
 	unsigned long long BEMsgLen = ToBigEndianLLU(8 * (unsigned long long)msgLen);
