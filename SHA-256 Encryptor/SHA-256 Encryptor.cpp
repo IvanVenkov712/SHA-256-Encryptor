@@ -10,82 +10,59 @@
 #include "Hash.h"
 
 using namespace std;
+const int STR_SIZE = 100;
+const int FILE_PATH_LEN = 255;
+void PrintInformation();
+bool GetHashOfInputMessage(char* dst, int dstSize);
+bool GetHashOfInputFile(char* dst, int dstSize);
+bool GetHashFromUserInput(char* dst, int dstSize);
+bool SaveHashInInputFile(const char* hash);
 
 int main()
 {
-	cout << "Available options:" << endl;
-	cout << "\th - Hash a file or a message" << endl;
-	cout << "\tc - Compare the hash of a message or a file with another hash" << endl;
-	cout << "\tx - Exit" << endl;
+	PrintInformation();
 	cout << "Enter an option: ";
-	char option = '\0';
+	char option = '\0';		
+
 	if (!GetChar(option)) {
 		cout << "Unrecognised option" << endl;
 		return 1;
 	}
 	else if (option == 'h') {
-		cout << "Enter 'm' to hash a message or 'f' to hash a file." << endl;
-		cout << "('m' or 'f'): ";
-		char hSource = '\0';
-		Hash h = {};			
-		char strHash[100] = {};
+		char hash[STR_SIZE] = {};
 
-		if (!GetChar(hSource)) {
-			cout << "Incorrect input" << endl;
+		if (!GetHashFromUserInput(hash, STR_SIZE)) {
 			return 1;
 		}
-		else if (hSource == 'm') {
-			cout << "Enter message: ";
-			char* msg = GetString('\n');
-			if (msg == nullptr) {
-				cout << "Incorrect input" << endl;
-				return 1;
-			}
-			if (!HashString(msg, &h)) {
-				cout << "An error occurred" << endl;
-				delete[] msg;
-				return 1;
-			}
-			HashToStr(strHash, 100, &h);
-			delete[] msg;
-		}
-		else if (hSource == 'f') {
-			cout << "Enter file path of hash source: ";
-			char* filePath = GetString('\n');
-			if (!HashFile(filePath, &h)) {
-				delete[] filePath;
-				cout << "An error opening file" << endl;
-				return 1;
-			}
-			HashToStr(strHash, 100, &h);
-		}
-		cout << "Hash code: " << strHash << endl;
+		cout << "Hash code: " << hash << endl;
 		cout << "Do you want to save it in a file? (y/n): ";
 		char c = '\0';
 		GetChar(c);
 		if (c == 'y') {
-			cout << "Enter file path: ";
-			char* filePath = GetString('\n');
-			if (!filePath) {
-				cout << "Incorrect input" << endl;
-				return 1;
-			}
-			ofstream f(filePath);
-			if (f.is_open()) {
-				f << strHash;
-				f.close();
-			}
-			else {
-				cout << "Error opening file" << endl;
-				delete[] filePath;
+			if (!SaveHashInInputFile(hash)) {
 				return 1;
 			}
 		}
 	}
 	else if (option == 'c') {
-		char hash[100] = {};
+		char hash1[STR_SIZE] = {};
+		char hash2[STR_SIZE] = {};
 		cout << "Enter a hash: ";
-
+		cin.getline(hash1, STR_SIZE);
+		if (cin.fail()) {
+			cout << "Incorrect input" << endl;
+			return 1;
+		}
+		if (!GetHashFromUserInput(hash2, STR_SIZE)) {
+			return 1;
+		}
+		bool equals = StrCmp(hash1, hash2) == 0;
+		if (equals) {
+			cout << "The hash codes are the same" << endl;
+		}
+		else {
+			cout << "The hash codes are not the same" << endl;
+		}
 	}
 	else if (option == 'x') {
 		return 0;
@@ -93,5 +70,104 @@ int main()
 	else {
 		cout << "Unrecognised option" << endl;
 		return 1;
+	}
+	return 0;
+}
+
+void PrintInformation()
+{
+	cout << "Available options:" << endl;
+	cout << "\th - Hash a file or a message" << endl;
+	cout << "\tc - Compare the hash of a message or a file with another hash" << endl;
+	cout << "\tx - Exit" << endl;
+}
+
+bool GetHashOfInputMessage(char* dst, int dstSize)
+{
+	Hash h = {};
+	cout << "Enter message: ";
+	char* msg = GetString('\n');
+	if (msg == nullptr) {
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+	if (!HashString(msg, &h)) {
+		cout << "An error occurred" << endl;
+		delete[] msg;
+		return false;
+	}
+	if (!HashToStr(dst, dstSize, &h)) {
+		cout << "An error occurred" << endl;
+		delete[] msg;
+		return false;
+	}
+	delete[] msg;
+	return true;
+}
+
+bool GetHashOfInputFile(char* dst, int dstSize)
+{
+	Hash h = {};
+	cout << "Enter file path of hash source: ";
+	char* filePath = GetString('\n');
+	if (filePath == nullptr) {
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+	if (!HashFile(filePath, &h)) {
+		delete[] filePath;
+		cout << "An error opening file" << endl;
+		return false;
+	}
+	if (!HashToStr(dst, dstSize, &h)) {
+		delete[] filePath;
+		cout << "An error occurred" << endl;
+		return false;
+	}
+	delete[] filePath;
+	return true;
+}
+
+bool GetHashFromUserInput(char* dst, int dstSize)
+{
+	cout << "Enter 'm' to hash a message or 'f' to hash a file." << endl;
+	cout << "('m' or 'f'): ";
+	char hSource = '\0';
+	bool getHashSuccess = false;
+	if (!GetChar(hSource)) {
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+	else if (hSource == 'm') {
+		getHashSuccess = GetHashOfInputMessage(dst, dstSize);
+	}
+	else if (hSource == 'f') {
+		getHashSuccess = GetHashOfInputFile(dst, dstSize);
+	}
+	else {
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+	return getHashSuccess;
+}
+
+bool SaveHashInInputFile(const char* hash)
+{
+	cout << "Enter file path: ";
+	char* filePath = GetString('\n');
+	if (!filePath) {
+		cout << "Incorrect input" << endl;
+		return false;
+	}
+	ofstream f(filePath);
+	if (f.is_open()) {
+		f << hash;
+		f.close();
+		delete[] filePath;
+	}
+	else {
+		cout << "Error opening file" << endl;
+		delete[] filePath;
+		return false;
 	}
 }

@@ -12,6 +12,25 @@ int StrLen(const char* str)
 	return str - begin;
 }
 
+int StrCmp(const char* str1, const char* str2)
+{
+	if (str1 == nullptr && str2 == nullptr) {
+		return 0;
+	}
+	else if (str1 == nullptr || str2 == nullptr) {
+		return str1 - str2;
+	}
+	do {
+		int diff = *str1 - *str2;
+		if (diff != 0) {
+			return diff;
+		}
+		++str1;
+		++str2;
+	} while (*str1 != '\0' && *str2 != '\0');
+	return 0;
+}
+
 bool ToStrHex(char* dst, size_t nDst, unsigned int value)
 {
 	const char dictionary[17] = "0123456789abcdef";
