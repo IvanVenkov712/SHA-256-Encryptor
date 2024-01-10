@@ -132,7 +132,7 @@
     <ClCompile Include="Hash.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="StringHelpers.cpp" />
-    <ClCompile Include="SHA-256 Encryptor.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Endianness.h" />

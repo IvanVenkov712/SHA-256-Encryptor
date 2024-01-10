@@ -16,7 +16,7 @@ void PrintInformation();
 bool GetHashOfInputMessage(char* dst, int dstSize);
 bool GetHashOfInputFile(char* dst, int dstSize);
 bool GetHashFromUserInput(char* dst, int dstSize);
-bool SaveHashInInputFile(const char* hash);
+bool SaveStringInInputFile(const char* hash);
 
 int main()
 {
@@ -39,7 +39,7 @@ int main()
 		char c = '\0';
 		GetChar(c);
 		if (c == 'y') {
-			if (!SaveHashInInputFile(hash)) {
+			if (!SaveStringInInputFile(hash)) {
 				return 1;
 			}
 		}
@@ -64,6 +64,38 @@ int main()
 			cout << "The hash codes are not the same" << endl;
 		}
 	}
+	else if (option == 'r') {
+		char hash[STR_SIZE] = {};
+		cout << "Enter a hash code (lower case): ";
+		cin.getline(hash, STR_SIZE);
+		if(cin.fail() || !IsValidHashCode(hash)){
+			cout << "Incorrect input" << endl;
+			return 1;
+		}
+		cout << "Enter max search length: ";
+		unsigned int maxLen = 0;
+		cin >> maxLen;
+		if (cin.fail()) {
+			cout << "Incorrect input" << endl;
+			return 1;
+		}
+		char* res = GetStringFromHash(hash, maxLen);
+		if (res == nullptr) {
+			cout << "That hash code could not be dehashed." << endl;
+			cout << "Note: Try with a bigger max search length." << endl;
+		}
+		else {
+			cout << "Dehashed message: " << res << endl;
+			cout << "Do you want to save it in a file? (y/n): ";
+			char c = '\0';
+			GetChar(c);
+			if (c == 'y') {
+				if (!SaveStringInInputFile(res)) {
+					return 1;
+				}
+			}
+		}
+	}
 	else if (option == 'x') {
 		return 0;
 	}
@@ -79,6 +111,7 @@ void PrintInformation()
 	cout << "Available options:" << endl;
 	cout << "\th - Hash a file or a message" << endl;
 	cout << "\tc - Compare the hash of a message or a file with another hash" << endl;
+	cout << "\tr - Tries to retrieve the message with a certain hash code (it may take a lot of time)" << endl;
 	cout << "\tx - Exit" << endl;
 	cout << endl;
 }
@@ -152,7 +185,7 @@ bool GetHashFromUserInput(char* dst, int dstSize)
 	return getHashSuccess;
 }
 
-bool SaveHashInInputFile(const char* hash)
+bool SaveStringInInputFile(const char* str)
 {
 	cout << "Enter file path: ";
 	char* filePath = GetString('\n');
@@ -160,9 +193,9 @@ bool SaveHashInInputFile(const char* hash)
 		cout << "Incorrect input" << endl;
 		return false;
 	}
-	ofstream f(filePath);
+	ofstream f(filePath, std::ios::binary);
 	if (f.is_open()) {
-		f << hash;
+		f << str;
 		f.close();
 		delete[] filePath;
 	}

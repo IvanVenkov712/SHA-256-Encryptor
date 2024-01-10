@@ -204,3 +204,59 @@ Byte* PadString(const char* str, int& size)
 	size = buffSize;
 	return buff;
 }
+char* TryAllMessagesOfLenN(unsigned int n, const char* hash)
+{
+	char* buff = new char[n + 1];
+	buff[n] = 0;
+	char* res = TryAllMessagesOfLenN(n, buff, hash);
+	if (res == nullptr) {
+		delete[] buff;
+	}
+	return res;
+}
+
+char* TryAllMessagesOfLenN(unsigned int n, char* initBuff, const char* hash)
+{
+	if (n == 0) {
+		return nullptr;
+	}
+	if (n == 1) {
+		Hash h = {};
+		char hashMsg[257] = {};
+		for (unsigned char ch = 255; ch >= 1; --ch) {
+			initBuff[0] = ch;
+			HashString(initBuff, &h);
+			HashToStr(hashMsg, 257, &h);
+			if (StrCmp(hash, hashMsg) == 0) {
+				return initBuff;
+			}
+		}
+		return nullptr;
+	}
+	else {
+
+		for (unsigned char ch = 255; ch >= 1; --ch) {
+			initBuff[n - 1] = ch;
+			char* res = TryAllMessagesOfLenN(n - 1, initBuff, hash);
+			if (res != nullptr) {
+				return res;
+			}
+		}
+	}
+	return nullptr;
+}
+
+char* GetStringFromHash(const char* hash, unsigned int maxLen)
+{
+	if (!IsValidHashCode(hash)) {
+		return nullptr;
+	}
+	char* res = nullptr;
+	for (unsigned int i = 0; i <= maxLen; ++i) {
+		res = TryAllMessagesOfLenN(i, hash);
+		if (res != nullptr) {
+			return res;
+		}
+	}
+	return nullptr;
+}
