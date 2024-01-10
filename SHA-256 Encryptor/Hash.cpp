@@ -98,7 +98,7 @@ bool HashFile(const char* fileName, Hash* out) {
 bool HashString(const char* msg, Hash* out)
 {
 	int buffSize = 0;
-	Byte* buff = PadMessage(msg, buffSize);
+	Byte* buff = PadString(msg, buffSize);
 	if (buff == nullptr) {
 		return false;
 	}
@@ -187,7 +187,7 @@ bool HashToStr(char* dst, size_t nDst, const Hash* hash)
 	ToStrHex(dst + 56, nDst - 56, hash->h7);
 	return true;
 }
-Byte* PadMessage(const char* msg, int& size)
+Byte* PadString(const char* msg, int& size)
 {
 	int msgLen = StrLen(msg);
 	int buffSize = AlignBuffSize(msgLen);
