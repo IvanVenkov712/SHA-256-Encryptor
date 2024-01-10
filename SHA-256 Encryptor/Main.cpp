@@ -21,7 +21,7 @@ bool SaveStringInInputFile(const char* hash);
 int main()
 {
 	PrintInformation();
-	cout << "Enter an option: ";
+	cout << "Enter option: ";
 	char option = '\0';		
 
 	if (!GetChar(option)) {
@@ -79,6 +79,7 @@ int main()
 			cout << "Incorrect input" << endl;
 			return 1;
 		}
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		char* res = GetStringFromHash(hash, maxLen);
 		if (res == nullptr) {
 			cout << "That hash code could not be dehashed." << endl;
