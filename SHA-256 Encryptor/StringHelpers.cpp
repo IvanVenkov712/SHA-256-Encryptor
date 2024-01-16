@@ -76,6 +76,15 @@ bool GetChar(char& ch)
 	return res;
 }
 
+bool GetOption(char& ch)
+{
+	bool res = GetChar(ch);
+	if (res) {
+		ch = ToLowerCase(ch);
+	}
+	return res;
+}
+
 char* ResizeString(char* str, int oldSize, int newSize)
 {
 	if (oldSize < 0 || newSize < 0 || newSize < oldSize) {
@@ -125,4 +134,23 @@ bool IsValidHashCode(const char* str)
 		}
 	}
 	return true;
+}
+
+char ToLowerCase(char c)
+{
+	if (c >= 'A' && c <= 'Z') {
+		return c + ('a' - 'A');
+	}
+	return c;
+}
+
+void ToLowerCase(char* str)
+{
+	if (str == nullptr) {
+		return;
+	}
+	int n = StrLen(str);
+	for (int i = 0; i < n; ++i) {
+		str[i] = ToLowerCase(str[i]);
+	}
 }

@@ -35,7 +35,7 @@ unsigned long long SwapBytesLLU(unsigned long long value)
 	return res;
 }
 
-unsigned long long SwapBytesU(unsigned int value)
+unsigned int SwapBytesU(unsigned int value)
 {
 	unsigned int res = value;
 	unsigned char* ptr = (unsigned char*)&res;

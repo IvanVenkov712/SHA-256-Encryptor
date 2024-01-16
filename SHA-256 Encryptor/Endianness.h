@@ -14,9 +14,21 @@
 */
 
 #pragma once
+
+/*
+* Checks if the computer architecture is little-endian or not
+*/
 bool IsLittleEndian();
+
+/*
+* Reverses the bytes of 'value'
+*/
 unsigned long long SwapBytesLLU(unsigned long long value);
-unsigned long long SwapBytesU(unsigned int value);
+
+/*
+* Reverses the bytes of 'value'
+*/
+unsigned int SwapBytesU(unsigned int value);
 unsigned long long ToBigEndianLLU(unsigned long long value);
 unsigned int ToBigEndianU(unsigned int value);
 unsigned int BigEndianAddU(unsigned int a, unsigned int b);
