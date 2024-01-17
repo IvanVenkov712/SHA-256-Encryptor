@@ -64,8 +64,18 @@ Byte* PadString(const char* str, int& size);
 
 /*
 * Checks if some string of length 'n' has hash code 'hash'.
-* Returns a pointer to that string if it is found, otherwise false;
+* Returns a pointer to that string if it is found, otherwise false.
 */
 char* TryAllMessagesOfLenN(unsigned int n, const char* hash);
+
+/*
+* Checks if some string of length 'n' has hash code 'hash'.
+* Returns a pointer to that string if it is found, otherwise false. Uses 'initBuff' to store that string.
+*/
 char* TryAllMessagesOfLenN(unsigned int n, char* initBuff, const char* hash);
+
+/*
+* Returns a null-terminated string which has hash code 'hash'. 
+* If the string is not found or has length greater than 'maxLen', returns nullptr.
+*/
 char* GetStringFromHash(const char* hash, unsigned int maxLen);

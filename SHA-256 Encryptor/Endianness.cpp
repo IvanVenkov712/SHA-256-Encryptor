@@ -27,7 +27,7 @@ unsigned long long SwapBytesLLU(unsigned long long value)
 	unsigned long long res = value;
 	unsigned char* ptr = (unsigned char*)&res;
 	unsigned int size = sizeof(res);
-	for (int i = 0; i < size / 2; ++i) {
+	for (unsigned int i = 0; i < size / 2; ++i) {
 		unsigned char tmp = ptr[i];
 		ptr[i] = ptr[size - 1 - i];
 		ptr[size - 1 - i] = tmp;
@@ -40,7 +40,7 @@ unsigned int SwapBytesU(unsigned int value)
 	unsigned int res = value;
 	unsigned char* ptr = (unsigned char*)&res;
 	unsigned int size = sizeof(res);
-	for (int i = 0; i < size / 2; ++i) {
+	for (unsigned int i = 0; i < size / 2; ++i) {
 		unsigned char tmp = ptr[i];
 		ptr[i] = ptr[size - 1 - i];
 		ptr[size - 1 - i] = tmp;
