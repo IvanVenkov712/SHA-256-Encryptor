@@ -63,11 +63,3 @@ unsigned int ToBigEndianU(unsigned int value)
 	}
 	return value;
 }
-
-unsigned int BigEndianAddU(unsigned int a, unsigned int b)
-{
-	if (IsLittleEndian()) {
-		return SwapBytesU(SwapBytesU(a) + SwapBytesU(b));
-	}
-	return a + b;
-}

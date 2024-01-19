@@ -9,7 +9,7 @@
 * @idnumber 1MI0600291
 * @compiler VC
 *
-* Header file: Contains the definitions of some helper functions for interacting with the user.
+* Source file: Contains the definitions of some helper functions for interacting with the user.
 *
 */
 

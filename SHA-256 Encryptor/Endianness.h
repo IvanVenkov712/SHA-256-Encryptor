@@ -29,6 +29,13 @@ unsigned long long SwapBytesLLU(unsigned long long value);
 * Reverses the bytes of 'value'
 */
 unsigned int SwapBytesU(unsigned int value);
+
+/*
+* Reverses the bytes of 'value' if the architecture is little-endian
+*/
 unsigned long long ToBigEndianLLU(unsigned long long value);
+
+/*
+* Reverses the bytes of 'value' if the architecture is little-endian
+*/
 unsigned int ToBigEndianU(unsigned int value);
-unsigned int BigEndianAddU(unsigned int a, unsigned int b);
